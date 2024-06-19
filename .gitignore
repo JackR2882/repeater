@@ -1,1 +1,4 @@
 .vscode/settings.json
+.gitignore
+something_with_session.py
+something.py
