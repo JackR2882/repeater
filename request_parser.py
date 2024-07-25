@@ -72,11 +72,13 @@ def parse(payloads):
 
 
 
-    data_dict = {}
+    #data_dict = {}
 
-    datas = re.sub('\{|\}|\"', '', payloads[19]).split(',')
-    for data in datas:
-        data = data.split(':')
-        data_dict[data[0]] = data[1]
+    #datas = re.sub('\{|\}|\"', '', payloads[19]).split(',')
+    #for data in datas:
+    #    data = data.split(':')
+    #    data_dict[data[0]] = data[1]
+
+    data_dict = payloads[19]
 
     return(url, cookie_dict, header_dict, data_dict)
