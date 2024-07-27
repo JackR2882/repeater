@@ -24,13 +24,13 @@ import re
 
 def parse(payloads):
 
-    url = "http://" + payloads[1].split()[1] + payloads[0].split()[1]
-
-
 
     cookie_dict = {}
     header_dict = {}
     data_dict = {}
+
+    http_req = ""
+    http_host = ""
 
     for payload in payloads:
         # iterate through all lines in the payload category
@@ -42,13 +42,21 @@ def parse(payloads):
                 split = cookie.split("=")
                 cookie_dict[split[0]] = split[1]
         elif '{' in payload and '}' in payload:
-            data_dict = payloads[19]
-        elif 'POST' in payload or 'GET' in payload: # need to add all other request types
+            data_dict = payload
+        elif 'POST' in payload or 'GET' in payload or 'PATCH' in payload or 'PUT' in payload or 'DELETE' in payload or 'HEAD' in payload: # need to add all other request types
             print('Contains url!')
-            # more complicated because it spans two lines which need to be combined
+            # More complicated because it spans two lines which need to be combined.
+            # Can put request and host into variables and then combine at end so order
+            # doesnt matter.
+            http_req = payload.split()[1]
+        elif 'Host: ' in payload or 'host: ' in payload:
+            print('Contains host!')
+            http_host = payload.split()[1]
         elif payload != '':
             header = payload.split(': ')
             header_dict[header[0]] = header[1]
+
+        url = 'http://' + http_host + http_req
 
 
     return(url, cookie_dict, header_dict, data_dict)
