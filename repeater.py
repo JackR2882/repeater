@@ -9,6 +9,14 @@ import request_parser
 import re
 import json
 
+import csv
+
+file_path = 'results.csv'
+
+# Clear CSV file of any exisiting data
+with open(file_path, 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerows([])
 
 
 def run(request, payload_location):
@@ -36,6 +44,11 @@ def run(request, payload_location):
 
         res = session.post(burp_url, headers=burp_headers, cookies=burp_cookies, json=replaced_json)
         
+        # Append data to CSV file
+        with open(file_path, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows([[payload, res]])
+
         print(res)
 
 
