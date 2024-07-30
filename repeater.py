@@ -10,6 +10,7 @@ import re
 import json
 
 import csv
+from time import perf_counter
 
 file_path = 'results.csv'
 
@@ -42,14 +43,19 @@ def run(request, payload_location):
         # load payload as json
         replaced_json = json.loads(replaced_json)
 
+        t1 = perf_counter()
+
         res = session.post(burp_url, headers=burp_headers, cookies=burp_cookies, json=replaced_json)
+
+        ex_time = perf_counter() - t1
         
         # Append data to CSV file
         with open(file_path, 'a', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerows([[payload, res]])
+            writer.writerows([[payload, res, ex_time, res.headers['Content-Length']]])
 
         print(res)
+        print(res.headers)
 
 
     with open("payload.txt", "r") as file_in:
