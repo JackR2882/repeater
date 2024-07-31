@@ -2,3 +2,8 @@
 .gitignore
 something_with_session.py
 something.py
+benchmark.txt
+full_request.txt
+payload_processed.txt
+results.csv
+payload.txt

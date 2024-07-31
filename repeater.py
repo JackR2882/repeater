@@ -25,20 +25,20 @@ def run(request, payload_location):
     burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(request.splitlines())
 
     def request(payload):
-        print('sending html request ... ... ...')
+        #print('sending html request ... ... ...')
         session = requests.session()
 
         replaced_json = re.sub(r''+str(payload_location), payload, str(burp_json))
 
-        print('------------------')
-        print(burp_url)
-        print('------------------')
-        print(burp_headers)
-        print('------------------')
-        print(burp_cookies)
-        print('------------------')
-        print(replaced_json)
-        print('------------------')
+        #print('------------------')
+        #print(burp_url)
+        #print('------------------')
+        #print(burp_headers)
+        #print('------------------')
+        #print(burp_cookies)
+        #print('------------------')
+        #print(replaced_json)
+        #print('------------------')
 
         # load payload as json
         replaced_json = json.loads(replaced_json)
@@ -54,8 +54,8 @@ def run(request, payload_location):
             writer = csv.writer(csvfile)
             writer.writerows([[payload, res, ex_time, res.headers['Content-Length']]])
 
-        print(res)
-        print(res.headers)
+        #print(res)
+        #print(res.headers)
 
 
     with open("payload.txt", "r") as file_in:
