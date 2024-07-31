@@ -1,5 +1,5 @@
 
-Functions similarly to burp's repeater tool in sniper mode with a single payload location.
+Functions similarly to burp's intruder tool in sniper mode with a single payload location.
 
 To run:
     - Run repeater_main.py
