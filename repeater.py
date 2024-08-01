@@ -28,7 +28,11 @@ def run(request, payload_location):
         #print('sending html request ... ... ...')
         session = requests.session()
 
-        replaced_json = re.sub(r''+str(payload_location), payload, str(burp_json))
+        replaced_json = burp_json
+
+        for p_l in payload_location:
+            replaced_json = re.sub(r''+str(p_l), payload, str(replaced_json))
+            print(replaced_json)
 
         #print('------------------')
         #print(burp_url)
