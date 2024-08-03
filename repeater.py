@@ -20,19 +20,46 @@ with open(file_path, 'w', newline='') as csvfile:
     writer.writerows([])
 
 
-def run(request, payload_location):
+def replace(text):    
+    
+    replacements = ['replace1', 'replace2']  
 
-    burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(request.splitlines())
+    regex = re.compile('(§).*?(§)')
+    #print(regex)
+    
+    for replacement in replacements:
+        text = regex.sub(replacement, text, 1)
+
+    #print(text)
+
+    return(text)
+
+
+def run(request_in):
+
+    #print(request_in)
+
+    burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(request_in.splitlines())
 
     def request(payload):
         #print('sending html request ... ... ...')
         session = requests.session()
 
-        replaced_json = burp_json
+        #print(type(request))
+        #print(request)
 
-        for p_l in payload_location:
-            replaced_json = re.sub(r''+str(p_l), payload, str(replaced_json))
-            print(replaced_json)
+        #replace(request_in)
+
+        burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in).splitlines())
+
+
+        
+        
+        #replaced_json = burp_json
+
+        #for p_l in payload_location:
+        #    replaced_json = re.sub(r''+str(p_l), payload, str(replaced_json))
+        #    print(replaced_json)
 
         #print('------------------')
         #print(burp_url)
@@ -45,11 +72,11 @@ def run(request, payload_location):
         #print('------------------')
 
         # load payload as json
-        replaced_json = json.loads(replaced_json)
+        burp_json = json.loads(burp_json)
 
         t1 = perf_counter()
 
-        res = session.post(burp_url, headers=burp_headers, cookies=burp_cookies, json=replaced_json)
+        res = session.post(burp_url, headers=burp_headers, cookies=burp_cookies, json=burp_json)
 
         ex_time = perf_counter() - t1
         
@@ -58,7 +85,7 @@ def run(request, payload_location):
             writer = csv.writer(csvfile)
             writer.writerows([[payload, res, ex_time, res.headers['Content-Length']]])
 
-        #print(res)
+        print(res)
         #print(res.headers)
 
 

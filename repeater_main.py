@@ -17,14 +17,14 @@ def run_repeater():
 	print("Running")
 	request = request_input.get(1.0, "end-1c") 
 	
-	payload_loc = []
+	#payload_loc = []
     
-	payload_loc.append(payload_pos1.get(1.0, "end-1c"))	
-	if p_count.get() > 1: payload_loc.append(payload_pos2.get(1.0, "end-1c"))
+	#payload_loc.append(payload_pos1.get(1.0, "end-1c"))	
+	#if p_count.get() > 1: payload_loc.append(payload_pos2.get(1.0, "end-1c"))
 
 	#payload_location = payload_pos1.get(1.0, "end-1c")
 	
-	repeater.run(request, payload_loc) # needs to be changed to take payload_loc instead, also need
+	repeater.run(request) # needs to be changed to take payload_loc instead, also need
 									   # to add conditionals to handle multiple payloads in repeater.py
 
 #def func1():
