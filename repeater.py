@@ -14,15 +14,17 @@ from time import perf_counter
 
 file_path = 'results.csv'
 
+
 # Clear CSV file of any exisiting data
 with open(file_path, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows([])
 
 
-def replace(text):    
+def replace(text, replacements):    
     
-    replacements = ['admin@juice-sh.op', 'admin123']  
+    #replacements = 
+    #replacements = ['admin@juice-sh.op', 'admin123']  
 
     regex = re.compile('(§).*?(§)')
     #print(regex)
@@ -41,7 +43,7 @@ def run(request_in):
 
     burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(request_in.splitlines())
 
-    def request(payload):
+    def request(payloads):
         #print('sending html request ... ... ...')
         session = requests.session()
 
@@ -50,7 +52,7 @@ def run(request_in):
 
         #replace(request_in)
 
-        burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in).splitlines())
+        burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in, payloads).splitlines())
         
         # load payload as json
         burp_json = json.loads(burp_json)
@@ -64,7 +66,7 @@ def run(request_in):
         # Append data to CSV file
         with open(file_path, 'a', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerows([[payload, res, ex_time, res.headers['Content-Length']]])
+            writer.writerows([[payloads, res, ex_time, res.headers['Content-Length']]])
 
         print(res)
 
@@ -72,8 +74,12 @@ def run(request_in):
     with open("payload.txt", "r") as file_in:
         payloads = file_in.read().splitlines()
 
+    with open("payload1.txt", "r") as file_in:
+        payloads1 = file_in.read().splitlines()
 
-    for payload in payloads:
-        print("Sending " + payload + " as payload.")
+
+    for payload, payload1 in zip(payloads, payloads1):
+        print("Sending: " + payload +  ", " + payload1 + " as payload(s).")
+
         #parsed = request_parser.parse(request)
-        request(payload)
+        request([payload, payload1])
