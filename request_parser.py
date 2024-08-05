@@ -44,13 +44,11 @@ def parse(payloads):
         elif '{' in payload and '}' in payload:
             data_dict = payload
         elif 'POST' in payload or 'GET' in payload or 'PATCH' in payload or 'PUT' in payload or 'DELETE' in payload or 'HEAD' in payload: # need to add all other request types
-            print('Contains url!')
             # More complicated because it spans two lines which need to be combined.
             # Can put request and host into variables and then combine at end so order
             # doesnt matter.
             http_req = payload.split()[1]
         elif 'Host: ' in payload or 'host: ' in payload:
-            print('Contains host!')
             http_host = payload.split()[1]
         elif payload != '':
             header = payload.split(': ')
