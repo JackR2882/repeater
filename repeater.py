@@ -22,7 +22,7 @@ with open(file_path, 'w', newline='') as csvfile:
 
 def replace(text):    
     
-    replacements = ['replace1', 'replace2']  
+    replacements = ['admin@juice-sh.op', 'admin123']  
 
     regex = re.compile('(§).*?(§)')
     #print(regex)
@@ -51,26 +51,7 @@ def run(request_in):
         #replace(request_in)
 
         burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in).splitlines())
-
-
         
-        
-        #replaced_json = burp_json
-
-        #for p_l in payload_location:
-        #    replaced_json = re.sub(r''+str(p_l), payload, str(replaced_json))
-        #    print(replaced_json)
-
-        #print('------------------')
-        #print(burp_url)
-        #print('------------------')
-        #print(burp_headers)
-        #print('------------------')
-        #print(burp_cookies)
-        #print('------------------')
-        #print(replaced_json)
-        #print('------------------')
-
         # load payload as json
         burp_json = json.loads(burp_json)
 
@@ -86,7 +67,6 @@ def run(request_in):
             writer.writerows([[payload, res, ex_time, res.headers['Content-Length']]])
 
         print(res)
-        #print(res.headers)
 
 
     with open("payload.txt", "r") as file_in:
