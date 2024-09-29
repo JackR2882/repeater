@@ -5,7 +5,7 @@ from tkinter.ttk import *
 
 # define tkinter frame
 frame = tk.Tk() 
-frame.title("User input:") 
+frame.title("Repeater") 
 #frame.geometry('1000x600') 
 
 

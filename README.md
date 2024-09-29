@@ -14,3 +14,8 @@ To run:
         payload n
     - Press the attack button, results will be published into 'results.csv', fields are as follows:
         payload ! http response ! response time ! response length
+
+
+TO DO:
+    - Implement mutiple payload locations.
+    - Implement multiple 
