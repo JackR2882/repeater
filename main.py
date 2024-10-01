@@ -14,7 +14,15 @@ frame.title("Repeater")
 
 # used to store current selection for number of payloads
 payload_count = 0
-p_count = IntVar()
+
+
+# used to keep track of checkbox value 
+paired = False
+
+# used to upate checkbox value
+def update_paired():
+	global paired
+	paired = not paired
 
 
 def run_repeater():
@@ -41,7 +49,7 @@ def run_repeater():
 
 	#payload_location = payload_pos1.get(1.0, "end-1c")
 	
-	repeater.run(request, payload_count) # needs to be changed to take payload_loc instead, also need
+	repeater.run(request, payload_count, paired) # needs to be changed to take payload_loc instead, also need
 									   # to add conditionals to handle multiple payloads in repeater.py
 
 #def func1():
@@ -126,7 +134,13 @@ add_button = tk.Button(frame,
 attack_button = tk.Button(frame, 
 						text = "ATTACK", 
 						command = run_repeater)
-#attackButton.pack(side="bottom") 
+
+
+
+# checkbox creation
+paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?',variable=paired, onvalue=True, offvalue=False, command=update_paired)
+
+
 
 
 # insert elements into window
@@ -141,6 +155,7 @@ add_button.grid_columnconfigure(1, weight=1)
 attack_button.grid(row=5, column=0, columnspan=2)
 attack_button.grid_rowconfigure(1, weight=1)
 attack_button.grid_columnconfigure(1, weight=1)
+paired_checkbox.grid(row=6, column=0, columnspan=2)
 
 # select r1 as default
 #r1.invoke()
