@@ -1,7 +1,10 @@
 import tkinter as tk
 import repeater
+from tkinter import messagebox
 from tkinter import *
 from tkinter.ttk import *
+
+import os
 
 # define tkinter frame
 frame = tk.Tk() 
@@ -10,10 +13,24 @@ frame.title("Repeater")
 
 
 # used to store current selection for number of payloads
+payload_count = 0
 p_count = IntVar()
 
 
 def run_repeater():
+
+	# Error checking to ensure correct number of payload files are present
+	if payload_count == 1:
+		if not os.path.isfile('payload1.txt'):
+			messagebox.showerror('Program Error', 'Error: please create payload1.txt')
+	elif payload_count == 2:
+		if not (os.path.isfile('payload1.txt') and os.path.isfile('payload2.txt')):
+			messagebox.showerror('Program Error', 'Error: please create payload1.txt and payload2.txt')
+	elif payload_count == 3:
+		if not (os.path.isfile('payload1.txt') and os.path.isfile('payload2.txt') and os.path.isfile('payload3.txt')):
+			messagebox.showerror('Program Error', 'Error: please create payload1.txt, payload2.txt and payload3.txt')
+
+	# swap this for a tkinter progress bar or something else?
 	print("Running")
 	request = request_input.get(1.0, "end-1c") 
 	
@@ -44,17 +61,23 @@ def run_repeater():
 #         payload_pos1.grid(row=2, column=1, sticky=W, pady=2)
 #         l2_2.grid(row=3, column=0, sticky=W, pady=2)
 #         payload_pos2.grid(row=3, column=1, sticky=W, pady=2)
-         
-
+      
 def add_symbols():
-    try:
-        index_start = request_input.index("sel.first")
-        index_end = request_input.index("sel.last")
-        request_input.insert(index_start, "§")
-        request_input.insert(str(float(index_end)+0.01), "§")
-    except:
-        print("ERROR: no selection!")
 
+	global payload_count
+    
+	if payload_count < 3:
+		try:
+			index_start = request_input.index("sel.first")
+			index_end = request_input.index("sel.last")
+			request_input.insert(index_start, "§")
+			request_input.insert(str(float(index_end)+0.01), "§")
+			payload_count += 1
+		except:
+			messagebox.showerror('Program Error', 'Error: no selection!')
+			print("ERROR: no selection!")
+	else:
+		messagebox.showerror('Program Error', 'Error: no more than 3 payloads can be used!')
 
 
 # Text box for request input
