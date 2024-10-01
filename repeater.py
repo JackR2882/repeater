@@ -35,38 +35,37 @@ def replace(text, replacements):
     return(text)
 
 
-def run(request_in, payload_count):
+def request(request_in, payloads):
+    #print('sending html request ... ... ...')
+    session = requests.session()
+
+    
+    burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in, payloads).splitlines())
+        
+    # load payload as json
+    burp_json = json.loads(burp_json)
+
+    t1 = perf_counter()
+
+    res = session.post(burp_url, headers=burp_headers, cookies=burp_cookies, json=burp_json)
+
+    ex_time = perf_counter() - t1
+        
+    # Append data to CSV file
+    with open(file_path, 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerows([[payloads, res, ex_time, res.headers['Content-Length']]])
+
+    print(res)
+
+
+
+
+def run(request_in, payload_count, paired):
 
     #print(request_in)
 
     #burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(request_in.splitlines())
-
-    def request(payloads):
-        #print('sending html request ... ... ...')
-        session = requests.session()
-
-        #print(type(request))
-        #print(request)
-
-        #replace(request_in)
-
-        burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in, payloads).splitlines())
-        
-        # load payload as json
-        burp_json = json.loads(burp_json)
-
-        t1 = perf_counter()
-
-        res = session.post(burp_url, headers=burp_headers, cookies=burp_cookies, json=burp_json)
-
-        ex_time = perf_counter() - t1
-        
-        # Append data to CSV file
-        with open(file_path, 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerows([[payloads, res, ex_time, res.headers['Content-Length']]])
-
-        print(res)
 
 
     #with open("payload.txt", "r") as file_in:
@@ -93,22 +92,20 @@ def run(request_in, payload_count):
 
     # two modes, payload 'pairs' (n), or repeated payloads (n^3)
 
-    paired = True # defines if the payloads are in pairs or not
-
     if paired:
         
         if payload_count == 1:
             for payload1 in payloads1:
                 print("Sending: " + payload1 + " as payload(s).")
-                request([payload1])
+                request(request_in, [payload1])
         elif payload_count == 2:
             for payload1, payload2 in zip(payloads1, payloads2):
                 print("Sending: " + payload1 +  ", " + payload2 + " as payload(s).")
-                request([payload1, payload2])
+                request(request_in, [payload1, payload2])
         elif payload_count == 3:
             for payload1, payload2, payload3 in zip(payloads1, payloads2, payloads3):
                 print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-                request([payload1, payload2, payload3])
+                request(request_in, [payload1, payload2, payload3])
 
         #for payload1, payload2, payload3 in zip(payloads1, payloads2, payloads3):
         #    print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
@@ -121,17 +118,17 @@ def run(request_in, payload_count):
         if payload_count == 1:
             for payload1 in payloads1:
                 print("Sending: " + payload1 + " as payload(s).")
-                request([payload1])
+                request(request_in, [payload1])
 
         if payload_count == 2:
             for payload1 in payloads1:
                 for payload2 in payloads2:
                     print("Sending: " + payload1 +  ", " + payload2 + " as payload(s).")
-                    request([payload1, payload2])
+                    request(request_in, [payload1, payload2])
 
         if payload_count == 3:
             for payload1 in payloads1:
                 for payload2 in payloads2:
                     for payload3 in payloads3:
                         print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-                        request([payload1, payload2, payload3])
+                        request(request_in, [payload1, payload2, payload3])
