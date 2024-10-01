@@ -13,3 +13,4 @@ To run:
 
 TO DO:
     - Implement mutiple payload locations.
+    - Implement request throttling.
