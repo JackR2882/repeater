@@ -41,7 +41,7 @@ def run_repeater():
 
 	#payload_location = payload_pos1.get(1.0, "end-1c")
 	
-	repeater.run(request) # needs to be changed to take payload_loc instead, also need
+	repeater.run(request, payload_count) # needs to be changed to take payload_loc instead, also need
 									   # to add conditionals to handle multiple payloads in repeater.py
 
 #def func1():
