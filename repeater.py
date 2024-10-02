@@ -11,6 +11,8 @@ import json
 
 import csv
 from time import perf_counter
+import time
+import random
 
 file_path = 'results.csv'
 
@@ -35,11 +37,21 @@ def replace(text, replacements):
     return(text)
 
 
-def request(request_in, payloads):
+def request(request_in, payloads, delay):
+
+    if delay[0] != 0:
+        # delay requried
+        if delay[1]:
+            # randomize bit set
+            time.sleep((random.randint(0, int(delay[0]*2)))/1000)
+        else:
+            # randomize bit not set
+            time.sleep((random.randint(0, int(delay[0])))/1000)
+
+
     #print('sending html request ... ... ...')
     session = requests.session()
 
-    
     burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(replace(request_in, payloads).splitlines())
         
     # load payload as json
@@ -61,7 +73,7 @@ def request(request_in, payloads):
 
 
 
-def run(request_in, payload_count, paired):
+def run(request_in, payload_count, paired, delay):
 
     #print(request_in)
 
@@ -97,15 +109,15 @@ def run(request_in, payload_count, paired):
         if payload_count == 1:
             for payload1 in payloads1:
                 print("Sending: " + payload1 + " as payload(s).")
-                request(request_in, [payload1])
+                request(request_in, [payload1], delay)
         elif payload_count == 2:
             for payload1, payload2 in zip(payloads1, payloads2):
                 print("Sending: " + payload1 +  ", " + payload2 + " as payload(s).")
-                request(request_in, [payload1, payload2])
+                request(request_in, [payload1, payload2], delay)
         elif payload_count == 3:
             for payload1, payload2, payload3 in zip(payloads1, payloads2, payloads3):
                 print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-                request(request_in, [payload1, payload2, payload3])
+                request(request_in, [payload1, payload2, payload3], delay)
 
         #for payload1, payload2, payload3 in zip(payloads1, payloads2, payloads3):
         #    print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
@@ -118,17 +130,17 @@ def run(request_in, payload_count, paired):
         if payload_count == 1:
             for payload1 in payloads1:
                 print("Sending: " + payload1 + " as payload(s).")
-                request(request_in, [payload1])
+                request(request_in, [payload1], delay)
 
         if payload_count == 2:
             for payload1 in payloads1:
                 for payload2 in payloads2:
                     print("Sending: " + payload1 +  ", " + payload2 + " as payload(s).")
-                    request(request_in, [payload1, payload2])
+                    request(request_in, [payload1, payload2], delay)
 
         if payload_count == 3:
             for payload1 in payloads1:
                 for payload2 in payloads2:
                     for payload3 in payloads3:
                         print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-                        request(request_in, [payload1, payload2, payload3])
+                        request(request_in, [payload1, payload2, payload3], delay)

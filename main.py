@@ -16,16 +16,38 @@ frame.title("Repeater")
 payload_count = 0
 
 
-# used to keep track of checkbox value 
+# variables used to keep track of checkbox values 
 paired = False
+tf_delay = False
+randomize_delay = False
 
-# used to upate checkbox value
+
+# update functions for checkbox variables
 def update_paired():
 	global paired
 	paired = not paired
+def update_tf_delay():
+	global tf_delay
+	tf_delay = not tf_delay
+	print(tf_delay)
+def update_randomize_delay():
+	global randomize_delay
+	randomize_delay = not randomize_delay
+	print(randomize_delay)
 
 
 def run_repeater():
+
+	if tf_delay:
+		try:
+			delay = float(delay_entry.get())
+		except:
+			messagebox.showerror('Program Error', 'Error: please enter a valid delay!')
+			return
+	else:
+		delay = 0
+
+	d = (delay, randomize_delay)
 
 	# Error checking to ensure correct number of payload files are present
 	if payload_count == 1:
@@ -49,7 +71,7 @@ def run_repeater():
 
 	#payload_location = payload_pos1.get(1.0, "end-1c")
 	
-	repeater.run(request, payload_count, paired) # needs to be changed to take payload_loc instead, also need
+	repeater.run(request, payload_count, paired, d) # needs to be changed to take payload_loc instead, also need
 									   # to add conditionals to handle multiple payloads in repeater.py
 
 #def func1():
@@ -138,9 +160,26 @@ attack_button = tk.Button(frame,
 
 
 # checkbox creation
-paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?',variable=paired, onvalue=True, offvalue=False, command=update_paired)
+paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?', variable=IntVar(), onvalue=True, offvalue=False, command=update_paired)
+delay_checkbox = tk.Checkbutton(frame, text='Apply throttling between requests?', variable=IntVar(), onvalue=True, offvalue=False, command=update_tf_delay)
+randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?', variable=IntVar(), onvalue=True, offvalue=False, command=update_randomize_delay)
 
 
+# don't need this method, can simplify to just display_entry.get()
+def test_meth():
+	try: 
+		print(float(delay_entry.get()))
+	except:
+		messagebox.showerror('Program Error', 'Error: please enter a valid delay!')
+
+test_button = tk.Button(frame, 
+						text = "TEST", 
+						command = test_meth)
+
+
+
+delay_entry = tk.Entry(frame, text='Enter wait time between requests')
+delay_entry.insert(END, '0')
 
 
 # insert elements into window
@@ -156,6 +195,11 @@ attack_button.grid(row=5, column=0, columnspan=2)
 attack_button.grid_rowconfigure(1, weight=1)
 attack_button.grid_columnconfigure(1, weight=1)
 paired_checkbox.grid(row=6, column=0, columnspan=2)
+delay_checkbox.grid(row=7, column=0, columnspan=1)
+randomize_delay_checkbox.grid(row=7, column=1, columnspan=1)
+delay_entry.grid(row=8, column=0, columnspan=2)
+
+test_button.grid(row=9, column=0, columnspan=2)
 
 # select r1 as default
 #r1.invoke()
