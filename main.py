@@ -8,8 +8,7 @@ import os
 
 # define tkinter frame
 frame = tk.Tk() 
-frame.title("Repeater") 
-#frame.geometry('1000x600') 
+frame.title("Repeater")
 
 
 # used to store current selection for number of payloads
@@ -62,35 +61,10 @@ def run_repeater():
 
 	# swap this for a tkinter progress bar or something else?
 	print("Running")
-	request = request_input.get(1.0, "end-1c") 
+	request = request_input.get(1.0, "end-1c")
 	
-	#payload_loc = []
-    
-	#payload_loc.append(payload_pos1.get(1.0, "end-1c"))	
-	#if p_count.get() > 1: payload_loc.append(payload_pos2.get(1.0, "end-1c"))
+	repeater.run(request, payload_count, paired, d)
 
-	#payload_location = payload_pos1.get(1.0, "end-1c")
-	
-	repeater.run(request, payload_count, paired, d) # needs to be changed to take payload_loc instead, also need
-									   # to add conditionals to handle multiple payloads in repeater.py
-
-#def func1():
-    
-    # clear any existing items from grid
-#    l2.grid_remove()
-#    payload_pos1.grid_remove()
-#    l2_2.grid_remove()
-#    payload_pos2.grid_remove()
-
-	# add required items to grid
-#    if p_count.get() == 1:
-#        l2.grid(row=2, column=0, sticky=W, pady=2)
-#        payload_pos1.grid(row=2, column=1, sticky=W, pady=2)
-#    elif p_count.get() == 2:
-#         l2.grid(row=2, column=0, sticky=W, pady=2)
-#         payload_pos1.grid(row=2, column=1, sticky=W, pady=2)
-#         l2_2.grid(row=3, column=0, sticky=W, pady=2)
-#         payload_pos2.grid(row=3, column=1, sticky=W, pady=2)
       
 def add_symbols():
 
@@ -120,37 +94,9 @@ request_input = tk.Text(frame,
 				width = 120)
 
 
-# Text boxes to identify payload position
-payload_pos1 = tk.Text(frame,
-					height = 1,
-					width = 20)
-payload_pos2 = tk.Text(frame,
-                    height = 1,
-                	width = 20)
-
 # Labels for text boxes
 l1 = tk.Label(frame, text = "Paste full html request:")
-#l2 = tk.Label(frame, text = "Identify payload: Must be exact match (regex).")
-#l2_2 = tk.Label(frame, text = "Identify payload 2: Must be exact match (regex).")
 
-
-# define radio buttons to select number of payloads
-#r1 = Radiobutton(frame, text="Single payload.", variable=p_count, value=1, command=func1)
-#Radio_1.pack(side = TOP, ipady = 5) 
-#Radio_1.invoke() # selects by default
-#r2 = Radiobutton(frame, text="Dual payload.", variable=p_count, value=2, command=func1)
-#Radio_2.pack(side = TOP, ipady = 5) 
-
-
-#l1.pack(side="top")
-#request_input.pack(side="top")
-
-#r1.pack(side="left")
-#r1.invoke()
-#r2.pack(side="left")
-
-#l2.pack(side="bottom")
-#payload_pos1.pack(side="bottom")
 
 # button creation
 add_button = tk.Button(frame, 
@@ -169,27 +115,12 @@ delay_checkbox = tk.Checkbutton(frame, text='Apply throttling between requests?'
 randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?', variable=IntVar(), onvalue=True, offvalue=False, command=update_randomize_delay)
 
 
-# don't need this method, can simplify to just display_entry.get()
-def test_meth():
-	try: 
-		print(float(delay_entry.get()))
-	except:
-		messagebox.showerror('Program Error', 'Error: please enter a valid delay!')
-
-test_button = tk.Button(frame, 
-						text = "TEST", 
-						command = test_meth)
-
-
-
+# text entry box creation
 delay_entry = tk.Entry(frame, text='Enter wait time between requests')
 delay_entry.insert(END, '0')
 
 
 # insert elements into window
-
-#r1.grid(row=0, column=0, sticky=W, pady=2)
-#r2.grid(row=0, column=1, sticky=W, pady=2)
 l1.grid(row=1, column=0, sticky=W, pady=2)
 request_input.grid(row=1,column=1, sticky=W, pady=2)
 add_button.grid(row=4, column=0, columnspan=2)
@@ -203,10 +134,6 @@ delay_checkbox.grid(row=7, column=0, columnspan=1)
 randomize_delay_checkbox.grid(row=7, column=1, columnspan=1)
 delay_entry.grid(row=8, column=0, columnspan=2)
 
-test_button.grid(row=9, column=0, columnspan=2)
-
-# select r1 as default
-#r1.invoke()
 
 
 
