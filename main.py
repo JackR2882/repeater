@@ -28,11 +28,9 @@ def update_paired():
 def update_tf_delay():
 	global tf_delay
 	tf_delay = not tf_delay
-	print(tf_delay)
 def update_randomize_delay():
 	global randomize_delay
 	randomize_delay = not randomize_delay
-	print(randomize_delay)
 
 
 def run_repeater():
