@@ -15,25 +15,19 @@ frame.title("Repeater")
 payload_count = 0
 
 
-# variables used to keep track of checkbox values 
-paired = False
-tf_delay = False
-randomize_delay = False
-
-
-# update functions for checkbox variables
-def update_paired():
-	global paired
-	paired = not paired
-def update_tf_delay():
-	global tf_delay
-	tf_delay = not tf_delay
-def update_randomize_delay():
-	global randomize_delay
-	randomize_delay = not randomize_delay
+# variables used to keep track of checkbox values
+paired = tk.IntVar()
+tf_delay = tk.IntVar()
+randomize_delay = tk.IntVar()
 
 
 def run_repeater():
+
+	# redefine checkbox values into boolean varaibles
+	paired = bool(paired.get())
+	tf_delay = bool(tf_delay.get())
+	randomize_delay = bool(randomize_delay.get())
+
 
 	if tf_delay:
 		try:
@@ -107,11 +101,10 @@ attack_button = tk.Button(frame,
 						command = run_repeater)
 
 
-
 # checkbox creation
-paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?', variable=IntVar(), onvalue=True, offvalue=False, command=update_paired)
-delay_checkbox = tk.Checkbutton(frame, text='Apply throttling between requests?', variable=IntVar(), onvalue=True, offvalue=False, command=update_tf_delay)
-randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?', variable=IntVar(), onvalue=True, offvalue=False, command=update_randomize_delay)
+paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?', variable=paired, onvalue=True, offvalue=False)
+delay_checkbox = tk.Checkbutton(frame, text='Apply throttling between requests?', variable=tf_delay, onvalue=True, offvalue=False)
+randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?', variable=randomize_delay, onvalue=True, offvalue=False)
 
 
 # text entry box creation
@@ -123,18 +116,12 @@ delay_entry.insert(END, '0')
 l1.grid(row=1, column=0, sticky=W, pady=2)
 request_input.grid(row=1,column=1, sticky=W, pady=2)
 add_button.grid(row=4, column=0, columnspan=2)
-#add_button.grid_rowconfigure(1, weight=1)
-#add_button.grid_columnconfigure(1, weight=1)
 attack_button.grid(row=5, column=0, columnspan=2)
-#attack_button.grid_rowconfigure(1, weight=1)
-#attack_button.grid_columnconfigure(1, weight=1)
 paired_checkbox.grid(row=6, column=0, columnspan=2, sticky='W')
 delay_checkbox.grid(row=7, column=0, columnspan=1, sticky='W')
 randomize_delay_checkbox.grid(row=7, column=1, columnspan=1, sticky='W')
 l2.grid(row=8, column=0, columnspan=1, sticky='W')
 delay_entry.grid(row=8, column=1, columnspan=1, sticky='W')
-
-
 
 
 frame.mainloop()
