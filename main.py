@@ -95,7 +95,8 @@ request_input = tk.Text(frame,
 
 
 # Labels for text boxes
-l1 = tk.Label(frame, text = "Paste full html request:")
+l1 = tk.Label(frame, text="Paste full html request:")
+l2 = tk.Label(frame, text="Delay between requests (ms):")
 
 
 # button creation
@@ -124,15 +125,16 @@ delay_entry.insert(END, '0')
 l1.grid(row=1, column=0, sticky=W, pady=2)
 request_input.grid(row=1,column=1, sticky=W, pady=2)
 add_button.grid(row=4, column=0, columnspan=2)
-add_button.grid_rowconfigure(1, weight=1)
-add_button.grid_columnconfigure(1, weight=1)
+#add_button.grid_rowconfigure(1, weight=1)
+#add_button.grid_columnconfigure(1, weight=1)
 attack_button.grid(row=5, column=0, columnspan=2)
-attack_button.grid_rowconfigure(1, weight=1)
-attack_button.grid_columnconfigure(1, weight=1)
-paired_checkbox.grid(row=6, column=0, columnspan=2)
-delay_checkbox.grid(row=7, column=0, columnspan=1)
-randomize_delay_checkbox.grid(row=7, column=1, columnspan=1)
-delay_entry.grid(row=8, column=0, columnspan=2)
+#attack_button.grid_rowconfigure(1, weight=1)
+#attack_button.grid_columnconfigure(1, weight=1)
+paired_checkbox.grid(row=6, column=0, columnspan=2, sticky='W')
+delay_checkbox.grid(row=7, column=0, columnspan=1, sticky='W')
+randomize_delay_checkbox.grid(row=7, column=1, columnspan=1, sticky='W')
+l2.grid(row=8, column=0, columnspan=1, sticky='W')
+delay_entry.grid(row=8, column=1, columnspan=1, sticky='W')
 
 
 
