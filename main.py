@@ -100,12 +100,16 @@ def add_symbols():
 		try:
 			index_start = request_input.index("sel.first")
 			index_end = request_input.index("sel.last")
+		
+			# need to increment index end, to insert into next index slot
+			ie_split = index_end.split('.')
+			ie_plusone = ie_split[0] + '.' + str(int(ie_split[1])+1) # necessary to ensure this is handled across varying amounts of
+																	 # decimal places based on content length
+
 			request_input.insert(index_start, "§")
-			request_input.insert(str(float(index_end)+0.01), "§")
-			payload_count += 1
+			request_input.insert(ie_plusone, "§")
 		except:
 			messagebox.showerror('Program Error', 'Error: no selection!')
-			print("ERROR: no selection!")
 	else:
 		messagebox.showerror('Program Error', 'Error: no more than 3 payloads can be used!')
 
