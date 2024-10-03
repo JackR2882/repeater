@@ -1,8 +1,6 @@
 import tkinter as tk
 import repeater
 from tkinter import messagebox
-from tkinter import *
-from tkinter.ttk import *
 
 import os
 
@@ -109,12 +107,12 @@ randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?
 
 # text entry box creation
 delay_entry = tk.Entry(frame, text='Enter wait time between requests')
-delay_entry.insert(END, '0')
+delay_entry.insert('end', '0')
 
 
 # insert elements into window
-l1.grid(row=1, column=0, sticky=W, pady=2)
-request_input.grid(row=1,column=1, sticky=W, pady=2)
+l1.grid(row=1, column=0, sticky='W', pady=2)
+request_input.grid(row=1,column=1, sticky='W', pady=2)
 add_button.grid(row=4, column=0, columnspan=2)
 attack_button.grid(row=5, column=0, columnspan=2)
 paired_checkbox.grid(row=6, column=0, columnspan=2, sticky='W')
