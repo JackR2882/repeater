@@ -38,16 +38,12 @@ def run_repeater():
 
 	d = (delay, randomize_delay)
 
+
 	# Error checking to ensure correct number of payload files are present
-	if payload_count == 1:
-		if not os.path.isfile('payload1.txt'):
-			messagebox.showerror('Program Error', 'Error: please create payload1.txt')
-	elif payload_count == 2:
-		if not (os.path.isfile('payload1.txt') and os.path.isfile('payload2.txt')):
-			messagebox.showerror('Program Error', 'Error: please create payload1.txt and payload2.txt')
-	elif payload_count == 3:
-		if not (os.path.isfile('payload1.txt') and os.path.isfile('payload2.txt') and os.path.isfile('payload3.txt')):
-			messagebox.showerror('Program Error', 'Error: please create payload1.txt, payload2.txt and payload3.txt')
+	for i in range(0, payload_count):
+		if not os.path.isfile('payload' + str(i+1) + '.txt'):
+			messagebox.showerror('Program Error', 'Error: please create payload' + str(i+1) + '.txt')
+
 
 	# swap this for a tkinter progress bar or something else?
 	print("Running")
@@ -72,6 +68,8 @@ def add_symbols():
 
 			request_input.insert(index_start, "§")
 			request_input.insert(ie_plusone, "§")
+
+			payload_count += 1
 		except:
 			messagebox.showerror('Program Error', 'Error: no selection!')
 	else:
