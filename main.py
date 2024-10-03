@@ -23,7 +23,6 @@ def run_repeater():
 	tf_delay = bool(tf_delay_e.get())
 	randomize_delay = bool(randomize_delay_e.get())
 
-
 	if tf_delay:
 		try:
 			delay = float(delay_entry.get())
@@ -34,13 +33,6 @@ def run_repeater():
 		delay = 0
 
 	d = (delay, randomize_delay)
-
-
-	# Error checking to ensure correct number of payload files are present
-	#for i in range(0, payload_count):
-	#	if not os.path.isfile('payload' + str(i+1) + '.txt'):
-	#		messagebox.showerror('Program Error', 'Error: please create payload' + str(i+1) + '.txt')
-
 
 	# maybe put a progress bar or something here?
 	request = request_input.get(1.0, "end-1c")
