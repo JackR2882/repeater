@@ -1,6 +1,7 @@
 import tkinter as tk
 import repeater
 from tkinter import messagebox
+from tkinter import *
 
 import os
 
@@ -9,22 +10,18 @@ frame = tk.Tk()
 frame.title("Repeater")
 
 
-# used to store current selection for number of payloads
-payload_count = 0
-
-
-# variables used to keep track of checkbox values
-paired = tk.IntVar()
-tf_delay = tk.IntVar()
-randomize_delay = tk.IntVar()
+# entry variables used to keep track of checkbox values
+paired_e = tk.IntVar()
+tf_delay_e = tk.IntVar()
+randomize_delay_e = tk.IntVar()
 
 
 def run_repeater():
 
 	# redefine checkbox values into boolean varaibles
-	paired = bool(paired.get())
-	tf_delay = bool(tf_delay.get())
-	randomize_delay = bool(randomize_delay.get())
+	paired = bool(paired_e.get())
+	tf_delay = bool(tf_delay_e.get())
+	randomize_delay = bool(randomize_delay_e.get())
 
 
 	if tf_delay:
@@ -40,41 +37,31 @@ def run_repeater():
 
 
 	# Error checking to ensure correct number of payload files are present
-	for i in range(0, payload_count):
-		if not os.path.isfile('payload' + str(i+1) + '.txt'):
-			messagebox.showerror('Program Error', 'Error: please create payload' + str(i+1) + '.txt')
+	#for i in range(0, payload_count):
+	#	if not os.path.isfile('payload' + str(i+1) + '.txt'):
+	#		messagebox.showerror('Program Error', 'Error: please create payload' + str(i+1) + '.txt')
 
 
-	# swap this for a tkinter progress bar or something else?
-	print("Running")
+	# maybe put a progress bar or something here?
 	request = request_input.get(1.0, "end-1c")
-	
-	repeater.run(request, payload_count, paired, d)
+	repeater.run(request, paired, d)
 
       
 def add_symbols():
 
-	global payload_count
-    
-	if payload_count < 3:
-		try:
-			index_start = request_input.index("sel.first")
-			index_end = request_input.index("sel.last")
+	try:
+		index_start = request_input.index("sel.first")
+		index_end = request_input.index("sel.last")
 		
-			# need to increment index end, to insert into next index slot
-			ie_split = index_end.split('.')
-			ie_plusone = ie_split[0] + '.' + str(int(ie_split[1])+1) # necessary to ensure this is handled across varying amounts of
+		# need to increment index end, to insert into next index slot
+		ie_split = index_end.split('.')
+		ie_plusone = ie_split[0] + '.' + str(int(ie_split[1])+1) # necessary to ensure this is handled across varying amounts of
 																	 # decimal places based on content length
-
-			request_input.insert(index_start, "§")
-			request_input.insert(ie_plusone, "§")
-
-			payload_count += 1
-		except:
-			messagebox.showerror('Program Error', 'Error: no selection!')
-	else:
-		messagebox.showerror('Program Error', 'Error: no more than 3 payloads can be used!')
-
+		request_input.insert(index_start, "§")
+		request_input.insert(ie_plusone, "§")
+	except:
+		messagebox.showerror('Program Error', 'Error: no selection!')
+	
 
 # Text box for request input
 request_input = tk.Text(frame,
@@ -98,9 +85,9 @@ attack_button = tk.Button(frame,
 
 
 # checkbox creation
-paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?', variable=paired, onvalue=True, offvalue=False)
-delay_checkbox = tk.Checkbutton(frame, text='Apply throttling between requests?', variable=tf_delay, onvalue=True, offvalue=False)
-randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?', variable=randomize_delay, onvalue=True, offvalue=False)
+paired_checkbox = tk.Checkbutton(frame, text='Are variables paired?', variable=paired_e, onvalue=True, offvalue=False)
+delay_checkbox = tk.Checkbutton(frame, text='Apply throttling between requests?', variable=tf_delay_e, onvalue=True, offvalue=False)
+randomize_delay_checkbox = tk.Checkbutton(frame, text='Randomize delay requests?', variable=randomize_delay_e, onvalue=True, offvalue=False)
 
 
 # text entry box creation
