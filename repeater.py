@@ -14,6 +14,8 @@ from time import perf_counter
 import time
 import random
 
+from tkinter import messagebox
+
 file_path = 'results.csv'
 
 
@@ -21,6 +23,22 @@ file_path = 'results.csv'
 with open(file_path, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows([])
+
+
+
+def payload_recursion(depth, payload_dict, temp_list):
+	if depth ==	len(payload_dict): # reached max depth
+		for item in payload_dict[depth]:
+			final_list = temp_list.copy()
+			final_list.append(item)
+			print('sending: ' + str(final_list) + ' as payload(s)')
+            #request(request_in, final_list, delay)
+	else: # recurse
+		for item in payload_dict[depth]:
+			list = temp_list.copy()
+			list.append(item)
+			payload_recursion(depth+1, payload_dict, list)
+
 
 
 def replace(text, replacements):    
@@ -73,74 +91,43 @@ def request(request_in, payloads, delay):
 
 
 
-def run(request_in, payload_count, paired, delay):
+def run(request_in, paired, delay):
 
-    #print(request_in)
-
-    #burp_url, burp_cookies, burp_headers, burp_json = request_parser.parse(request_in.splitlines())
-
-
-    #with open("payload.txt", "r") as file_in:
-    #    payloads = file_in.read().splitlines()
-
-    #with open("payload1.txt", "r") as file_in:
-    #    payloads1 = file_in.read().splitlines()
-
-
-    # Can assume 1 payload by default
-    with open("payload1.txt", "r") as file_in:
-        payloads1 = file_in.read().splitlines()
+    payload_count = int(request_in.count('§')/2)
     
+    if payload_count < 1: # handle no payload location
+         messagebox.showerror('Program Error', 'Error: no payload location selected!')
+         return
+
+    print(payload_count)
+
+    payload_dict = {}
+
+    for i in range(0, payload_count):
+        try:
+            with open("payload" + str(i+1) + ".txt", "r") as file_in:
+                payload_dict[i+1] = file_in.read().splitlines()
+                print("read: payload" + str(i+1) + ".txt")
+        except:
+            messagebox.showerror('Program Error', 'Error: please create payload' + str(i+1) + '.txt')
+            return
+
     
-    if payload_count == 2:
-        with open("payload2.txt", "r") as file_in:
-            payloads2 = file_in.read().splitlines()
-    elif payload_count == 3:
-        with open("payload2.txt", "r") as file_in:
-            payloads2 = file_in.read().splitlines()
-        with open("payload3.txt", "r") as file_in:
-            payloads3 = file_in.read().splitlines()
-
-
-    # two modes, payload 'pairs' (n), or repeated payloads (n^3)
 
     if paired:
-        
-        if payload_count == 1:
-            for payload1 in payloads1:
-                print("Sending: " + payload1 + " as payload(s).")
-                request(request_in, [payload1], delay)
-        elif payload_count == 2:
-            for payload1, payload2 in zip(payloads1, payloads2):
-                print("Sending: " + payload1 +  ", " + payload2 + " as payload(s).")
-                request(request_in, [payload1, payload2], delay)
-        elif payload_count == 3:
-            for payload1, payload2, payload3 in zip(payloads1, payloads2, payloads3):
-                print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-                request(request_in, [payload1, payload2, payload3], delay)
-
-        #for payload1, payload2, payload3 in zip(payloads1, payloads2, payloads3):
-        #    print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-
-            #parsed = request_parser.parse(request)
-        #    request([payload1, payload2, payload3])
+	
+        for i in range(0, len(payload_dict[1])):
+            payload_arr = []
+            try:
+                for key in payload_dict:
+                    payload_arr.append(payload_dict[key][i])
+            except:
+                # length mismatch
+                print('ERROR length mismatch')
+                break
+            print('sending: ' + str(payload_arr) + ' as payload(s)')
+        #request(request_in, payload_arr, delay)
 
     else:
-
-        if payload_count == 1:
-            for payload1 in payloads1:
-                print("Sending: " + payload1 + " as payload(s).")
-                request(request_in, [payload1], delay)
-
-        if payload_count == 2:
-            for payload1 in payloads1:
-                for payload2 in payloads2:
-                    print("Sending: " + payload1 +  ", " + payload2 + " as payload(s).")
-                    request(request_in, [payload1, payload2], delay)
-
-        if payload_count == 3:
-            for payload1 in payloads1:
-                for payload2 in payloads2:
-                    for payload3 in payloads3:
-                        print("Sending: " + payload1 +  ", " + payload2 + ", " + payload3 + " as payload(s).")
-                        request(request_in, [payload1, payload2, payload3], delay)
+    
+        payload_recursion(1, payload_dict, [])
