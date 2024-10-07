@@ -16,7 +16,7 @@ def parse(payloads):
 
     http_req = ""
     http_host = ""
-
+    
     for payload in payloads:
         # iterate through all lines in the payload category
         if 'Cookie:' in payload or 'cookie:' in payload:
