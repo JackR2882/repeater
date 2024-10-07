@@ -1,24 +1,9 @@
-# NEEDS CLEANING UP, BUT GOOD START TO PARSING REQUESTS
-# SHOULD TEST WITH DIFFERENT REQUESTS TO MAKE SURE THEY'RE UNIFORM IN STRUCTURE
-
-
-
-import re
-
 # take raw burp request as input, and process it into variables
 # variables are:
 #   url
 #   cookie_dict
 #   header_dict
 #   data_dict
-
-#def parse(file_in):
-#    print(file_in)
-
-#with open("full_request.txt", "r") as file_in:
-#    payloads = file_in.read().splitlines()
-
-#print(payloads)
 
 
 
@@ -44,9 +29,6 @@ def parse(payloads):
         elif '{' in payload and '}' in payload:
             data_dict = payload
         elif 'POST' in payload or 'GET' in payload or 'PATCH' in payload or 'PUT' in payload or 'DELETE' in payload or 'HEAD' in payload: # need to add all other request types
-            # More complicated because it spans two lines which need to be combined.
-            # Can put request and host into variables and then combine at end so order
-            # doesnt matter.
             http_req = payload.split()[1]
         elif 'Host: ' in payload or 'host: ' in payload:
             http_host = payload.split()[1]
