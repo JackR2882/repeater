@@ -5,10 +5,7 @@
 #   header_dict
 #   data_dict
 
-
-
 def parse(payloads):
-
 
     cookie_dict = {}
     header_dict = {}
