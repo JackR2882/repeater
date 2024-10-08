@@ -1,5 +1,4 @@
-# CHECK BENCHMARK.TXT, PROCESSES DONT SEEM TO AFFECT EXECUTION TIME, POSSIBLY DUE TO LOCK ON NETWORK INTERFACE (NO CONCURRENT REQUESTS)
-# MIGHT AS WELL USE A SIMPLE LOOP
+# BROKEN WITH TWO PAYLOAD LOCATIONS, WHEN PAIRED = TRUE (NO STATUS CODE "200" IN RESPONSE)
 
 
 
@@ -133,7 +132,7 @@ def run(request_in, paired, delay):
                 print('ERROR length mismatch')
                 break
             print('sending: ' + str(payload_arr) + ' as payload(s)')
-            request_class.request(str(payload_arr))
+            request_class.request(payload_arr)
 
     else:
     
